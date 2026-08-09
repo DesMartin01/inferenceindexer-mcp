@@ -1,0 +1,15 @@
+[Unit]
+Description=InferenceIndexer MCP server (streamable-http)
+After=network.target inferenceindexer-api.service
+
+[Service]
+Type=simple
+WorkingDirectory=/home/ubuntu/obsidian-vault/10-Projects/inference-futures-exchange/mcp-server
+EnvironmentFile=/home/ubuntu/obsidian-vault/10-Projects/inference-futures-exchange/mcp-server/.env
+ExecStart=/home/ubuntu/obsidian-vault/10-Projects/inference-futures-exchange/mcp-server/.venv/bin/python -m inferenceindexer_mcp.server --transport streamable-http --port 8899
+Restart=always
+RestartSec=3
+User=ubuntu
+
+[Install]
+WantedBy=multi-user.target
