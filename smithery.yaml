@@ -1,0 +1,28 @@
+# Smithery configuration for InferenceIndexer MCP server.
+# See: https://docs.smithery.ai/configuration
+name: inferenceindexer-mcp
+displayName: InferenceIndexer MCP
+description: >-
+  Callable MCP tools for complete AI inference pricing: live + historical prices
+  by model, provider comparison, and the SIT index. Agents get full inference
+  pricing without assembling it themselves.
+author:
+  name: Des Martin
+  url: https://www.inferenceindexer.ai/for-agents
+
+# uvx is the primary launch path once published to PyPI (pypi will auto-index).
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    properties: {}
+  commandFunction: |
+    (config) => ({
+      command: 'uvx',
+      args: ['inferenceindexer-mcp'],
+    })
+
+commands:
+  run:
+    command: uvx
+    args: [inferenceindexer-mcp]
