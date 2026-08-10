@@ -20,9 +20,9 @@ complete pricing, historical trends, provider comparison, and the SIT index.
 
 ## Config (env)
 
-- `II_API_BASE` - InferenceIndexer API base (default `http://34.246.208.210:8000`)
-- `II_API_KEY` - Optional `Bearer` key (use to raise rate limits)
-- `II_SSR_SECRET` - Optional first-party SSR secret (higher rate tier)
+- `II_API_BASE` - InferenceIndexer API base (default `https://api.inferenceindexer.ai`)
+- `II_API_KEY` - Optional bearer key (public server works without one; a key raises rate limits)
+- `II_SSR_SECRET` - Optional first-party secret for self-hosted/higher-tier use only. Not set on the public server.
 
 ## Run
 
@@ -32,9 +32,9 @@ uv sync
 uv run inferenceindexer-mcp
 ```
 
-Serve over HTTP/SSE (for remote clients, e.g. on the VPS):
+Serve over HTTP/SSE (for remote clients, e.g. the hosted endpoint at `https://api.inferenceindexer.ai/mcp`):
 ```bash
-II_SSR_SECRET=... uv run inferenceindexer-mcp --transport streamable-http --port 8899
+uv run inferenceindexer-mcp --transport streamable-http --port 8899
 ```
 
 ## Connect an agent / MCP client
