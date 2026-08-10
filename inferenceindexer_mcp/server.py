@@ -23,7 +23,7 @@ import httpx
 from mcp.server.fastmcp import FastMCP
 
 # Configurable API base, optional API key, and SSR secret (first-party tier).
-API_BASE = os.environ.get("II_API_BASE", "http://34.246.208.210:8000").rstrip("/")
+API_BASE = os.environ.get("II_API_BASE", "https://api.inferenceindexer.ai").rstrip("/")
 API_KEY = os.environ.get("II_API_KEY", "")
 SSR_SECRET = os.environ.get("II_SSR_SECRET", "")
 
