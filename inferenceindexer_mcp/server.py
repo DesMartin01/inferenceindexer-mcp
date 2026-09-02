@@ -59,6 +59,77 @@ def _get(path: str, params: dict[str, Any] | None = None) -> dict[str, Any]:
         return resp.json()
 
 
+def _post(path: str, payload: dict[str, Any]) -> dict[str, Any]:
+    """POST to the InferenceIndexer API, return parsed JSON. Raises on non-2xx."""
+    with httpx.Client(timeout=30) as client:
+        resp = client.post(f"{API_BASE}{path}", json=payload, headers=_headers())
+        resp.raise_for_status()
+        return resp.json()
+
+
+@mcp.tool()
+def recommend_models(
+    budget_max_usd_per_m: float | None = None,
+    context_min: int | None = None,
+    modality: str = "text",
+    zdr: bool = False,
+    eu_sovereign: bool = False,
+    reasoning: bool | None = None,
+    limit: int = 5,
+) -> dict[str, Any]:
+    """Recommend the best-value AI models for given constraints, ranked with receipts.
+
+    The core answer endpoint: give it constraints and it returns the top models
+    ranked by Cost/IQ (quality-adjusted price, lower is better), each with a
+    plain-English 'why', a hot-swap endpoint_config (provider base_url + native
+    model id, ready to call), as-of timestamps, and runner-ups.
+
+    Args:
+        budget_max_usd_per_m: Max blended price $/M (optional).
+        context_min: Minimum context window in tokens (optional).
+        modality: 'text' (default), 'vision', or 'any'.
+        zdr: Require zero-data-retention providers (optional).
+        eu_sovereign: Require EU-sovereign providers (optional).
+        reasoning: Filter reasoning models (null = any, true/false).
+        limit: Max recommendations (1-20, default 5).
+    Returns: ranked recommendations with endpoint_config and ranking evidence.
+    """
+    payload: dict[str, Any] = {
+        "limit": min(20, max(1, limit)),
+        "modality": modality,
+        "zdr": zdr,
+        "eu_sovereign": eu_sovereign,
+    }
+    if budget_max_usd_per_m is not None:
+        payload["budget_max_usd_per_m"] = budget_max_usd_per_m
+    if context_min is not None:
+        payload["context_min"] = context_min
+    if reasoning is not None:
+        payload["reasoning"] = reasoning
+    return _post("/v1/recommend", payload)
+
+
+@mcp.tool()
+def explain_model(
+    model_id: str,
+    history_days: int = 30,
+) -> dict[str, Any]:
+    """Get everything about one model in a single call: the full picture.
+
+    Returns current pricing (input/output/blended, Cost/IQ, 24h/7d changes),
+    a price-history summary with trend, all provider endpoints, the cheapest
+    hand-verified endpoint with its native model id (for hot-swapping),
+    privacy flags (ZDR/EU availability), and the AA intelligence score.
+    Everything is as-of stamped.
+
+    Args:
+        model_id: Canonical model id, e.g. 'anthropic/claude-sonnet-5'.
+        history_days: Price-history window (default 30, max 365).
+    Returns: complete model profile with pricing, endpoints, privacy, quality.
+    """
+    return _get("/v1/explain", {"model_id": model_id, "history_days": min(365, max(1, history_days))})
+
+
 @mcp.tool()
 def search_models(
     query: str | None = None,
