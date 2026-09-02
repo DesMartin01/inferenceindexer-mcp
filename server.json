@@ -1,0 +1,42 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.DesMartin01/inferenceindexer-mcp",
+  "description": "AI inference pricing for agents: live and historical model prices, provider comparison.",
+  "repository": {
+    "url": "https://github.com/DesMartin01/inferenceindexer-mcp",
+    "source": "github"
+  },
+  "version": "0.2.0",
+  "packages": [
+    {
+      "registryType": "pypi",
+      "identifier": "inferenceindexer-mcp",
+      "version": "0.2.0",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "description": "Base URL of the InferenceIndexer API (defaults to the public API; no key required for the free tier)",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": false,
+          "name": "II_API_BASE"
+        },
+        {
+          "description": "Optional InferenceIndexer API key (raises rate limits; free keys at https://www.inferenceindexer.ai/for-agents)",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": true,
+          "name": "II_API_KEY"
+        }
+      ]
+    }
+  ],
+  "remotes": [
+    {
+      "url": "https://api.inferenceindexer.ai/mcp",
+      "type": "streamable-http"
+    }
+  ]
+}

@@ -46,6 +46,11 @@ def _headers() -> dict[str, str]:
     return h
 
 
+# --- usage logging -----------------------------------------------------------
+# Every tools/call is wrapped so one row lands in mcp_call_log (see calllog.py).
+from .calllog import CallLogWrapper  # noqa: E402
+
+
 def _get(path: str, params: dict[str, Any] | None = None) -> dict[str, Any]:
     """GET the InferenceIndexer API, return parsed JSON. Raises on non-2xx."""
     with httpx.Client(timeout=30) as client:
@@ -173,9 +178,10 @@ def main() -> None:
     if args.transport in ("sse", "streamable-http"):
         # FastMCP 1.x serves http transports on mcp.settings.port.
         mcp.settings.port = args.port
+        CallLogWrapper().install(mcp)
         mcp.run(transport=args.transport)
     else:
-        mcp.run()  # stdio
+        mcp.run()  # stdio (no call logging: stdio runs on the agent's machine)
 
 
 if __name__ == "__main__":

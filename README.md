@@ -1,5 +1,7 @@
 # InferenceIndexer MCP Server
 
+<!-- mcp-name: io.github.DesMartin01/inferenceindexer-mcp -->
+
 Model Context Protocol server exposing InferenceIndexer's live + historical
 inference pricing as agent callable tools. Instead of an agent assembling
 inference pricing itself (slow, incomplete), it can call these tools to get
