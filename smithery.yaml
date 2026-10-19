@@ -4,8 +4,10 @@ name: inferenceindexer-mcp
 displayName: InferenceIndexer MCP
 description: >-
   Callable MCP tools for complete AI inference pricing: live + historical prices
-  by model, provider comparison, and the SIT index. Agents get full inference
-  pricing without assembling it themselves.
+  by model, provider comparison, and the SIT index. Includes recommend_models
+  (rank models under budget/context/privacy/quality constraints) and
+  explain_model (one-call model profile). Agents get full inference pricing
+  without assembling it themselves. No API key required.
 author:
   name: Des Martin
   url: https://www.inferenceindexer.ai/for-agents
