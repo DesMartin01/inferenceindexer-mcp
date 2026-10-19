@@ -11,6 +11,8 @@ complete pricing, historical trends, provider comparison, and the SIT index.
 
 | Tool | Description |
 |---|---|
+| `recommend_models` | **Call this first**: rank models under your constraints (budget, context, ZDR, quality floor) with ready-to-call endpoint configs |
+| `explain_model` | Everything about one model in one call: pricing, trend, endpoints, privacy flags |
 | `search_models` | Search/list models with current pricing (by text, tier, sort) |
 | `get_model` | Full detail + current price for one model |
 | `get_model_history` | **Historical** price trends for one model (the differentiator) |
@@ -53,4 +55,4 @@ Claude Desktop / generic MCP client (stdio):
 }
 ```
 
-Updated Aug 2026.
+Updated Oct 2026. Hosted (no install): https://api.inferenceindexer.ai/mcp - add `"url": "https://api.inferenceindexer.ai/mcp"` to mcpServers for streamable-http clients.
